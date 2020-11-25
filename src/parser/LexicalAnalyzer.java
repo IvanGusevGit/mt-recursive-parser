@@ -14,6 +14,7 @@ public class LexicalAnalyzer {
         SEMICOLON,
         COMMA,
         ASTERISK,
+        AMPERSAND,
         END;
     }
 
@@ -65,6 +66,10 @@ public class LexicalAnalyzer {
         } else if (current() == '*') {
             currentTokenString = "*";
             currentToken = Token.ASTERISK;
+            currentPosition++;
+        } else if (current() == '&') {
+            currentTokenString = "&";
+            currentToken = Token.AMPERSAND;
             currentPosition++;
         } else if (currentPosition == data.length()) {
             currentToken = Token.END;

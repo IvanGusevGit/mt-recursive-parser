@@ -19,12 +19,34 @@ public class Parser {
 
     }
 
-    private Tree parseP() throws ParserException {
+    private Tree parseR() throws ParserException {
         var currentToken = lexicalAnalyzer.getCurrentToken();
         Tree result;
         switch (currentToken) {
             case NAME -> {
-                result = new Tree("P", parseT());
+                result = new Tree("R", parseT());
+            }
+            case AMPERSAND -> {
+                lexicalAnalyzer.updateToken();
+                result = new Tree("R", new Tree("&"), parseT());
+            }
+            case END -> {
+                result = new Tree("R", new Tree("<null>"));
+            }
+            default -> {
+                throw new ParserException(lexicalAnalyzer.getData(), lexicalAnalyzer.getPreviousPosition(),
+                        "unexpected token found");
+            }
+        }
+        return result;
+    }
+
+    private Tree parseP() throws ParserException {
+        var currentToken = lexicalAnalyzer.getCurrentToken();
+        Tree result;
+        switch (currentToken) {
+            case NAME, AMPERSAND -> {
+                result = new Tree("P", parseR());
             }
             case ASTERISK -> {
                 lexicalAnalyzer.updateToken();

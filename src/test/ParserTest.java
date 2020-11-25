@@ -71,4 +71,16 @@ class ParserTest {
         testFail("type x, *x, size_t value; type X; new_type Z");
 
     }
+
+    @Test
+    void testReference() {
+        testOk("int a, b, &c;");
+        testOk("TYPE a, **&c; type &g;");
+        testOk( "type &X; type *&Z;");
+
+        testFail("int a, &&c;");
+        testFail("int a, &*ref;");
+        testFail("type a, *&b; type &&c;");
+        testFail( "STRING **&; test &value;");
+    }
 }
